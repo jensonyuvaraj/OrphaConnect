@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beneficiary UI</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        .container {
+            width: 200px; /* Fixed width for the container */
+            height: 300px; /* Fixed height for the container */
+            margin: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            float: left;
+            overflow: hidden; /* Hide overflow for image */
+        }
+        .container:hover {
+            transform: scale(1.05);
+            z-index: 1;
+        }
+        
+        .food-type {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        .image-container {
+            flex: 1;
+            overflow: hidden;
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+        .location {
+            margin-bottom: 5px;
+            cursor: pointer; /* Change cursor to pointer when hovering over location */
+        }
+        
+        .sub-container {
+            display: none;
+            position: absolute;
+            top: calc(55% + 5px);
+            left: 75px;
+            width: 150px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+        .sub-container ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sub-container li {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .sub-container li:hover {
+            background-color: #f2f2f2;
+        }
+        .delivery-mode {
+            margin-top: 5px;
+        }
+        .contact-details p {
+            margin-top: 5px;
+            cursor: help; /* Change cursor style to help */
+        }
+        .acknowledge-btn {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 5px; /* Aligns the button to the bottom */
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    function fetchDataAndCreateContainers() {
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    var container = document.createElement('div');
+                    container.className = 'container';
+
+                    var foodTypeSpan = document.createElement('span');
+                    foodTypeSpan.className = 'food-type';
+                    foodTypeSpan.textContent = item.foodType;
+                    container.appendChild(foodTypeSpan);
+
+                    var imageContainer = document.createElement('div');
+                    imageContainer.className = 'image-container';
+                    var image = document.createElement('img');
+                    var imagePath = item.image || 'images/Food.jpg'; // Adjust default image path here
+                    image.src = imagePath;
+                    image.alt = 'Food Image';
+                    imageContainer.appendChild(image);
+                    container.appendChild(imageContainer);
+
+                    var locationPara = document.createElement('p');
+                    var locationWrapper = document.createElement('div'); // Wrap location and sub-container
+                    locationPara.className = 'location';
+                    locationPara.innerHTML = '<b>Location: </b>' + item.location;
+                    locationPara.addEventListener('mouseover', showSubContainer);
+                    locationPara.addEventListener('mouseout', hideSubContainer);
+                    locationWrapper.appendChild(locationPara);
+
+                    var subContainer = document.createElement('div');
+                    subContainer.className = 'sub-container';
+                    subContainer.addEventListener('mouseover', showSubContainer);
+                    subContainer.addEventListener('mouseout', hideSubContainer);
+                    subContainer.innerHTML = `
+                        <ul>
+                            <li onclick="copyLocation('${item.location}')">Copy Location</li>
+                            <li onclick="redirectToMap('${item.location}')">Redirect to Map</li>
+                        </ul>
+                    `;
+                    locationWrapper.appendChild(subContainer);
+
+                    container.appendChild(locationWrapper);
+
+                    
+                    var deliveryPara = document.createElement('p');
+                    deliveryPara.className = 'delivery-mode';
+                    deliveryPara.innerHTML = '<b>Delivery:</b> '+item.delivery;
+                    container.appendChild(deliveryPara);
+                    
+
+                    var contactDetails = document.createElement('div');
+                    contactDetails.className = 'contact-details';
+                    var contactPara = document.createElement('p');
+                    contactPara.title = 'Click to copy';
+                    contactPara.innerHTML = '<b>Contact:</b> <em onclick="copyToClipboard(this)">' + item.contact + '</em>';
+                    contactDetails.appendChild(contactPara);
+                    var acknowledgeBtn = document.createElement('button');
+                    acknowledgeBtn.className = 'acknowledge-btn';
+                    acknowledgeBtn.textContent = "I'm Available";
+                    acknowledgeBtn.addEventListener('click', function() {
+                        alert("Your acknowledgement has been sent to the donor!");
+                    });
+                    contactDetails.appendChild(acknowledgeBtn);
+                    container.appendChild(contactDetails);
+
+                    document.body.appendChild(container);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching JSON:', error);
+            });
+    }
+    
+
+    function copyLocation(location) {
+        navigator.clipboard.writeText(location);
+        alert('Location copied to clipboard: ' + location);
+    }
+
+    function copyToClipboard(element) {
+        var contact = element.textContent;
+        const el = document.createElement('textarea');
+        el.value = contact;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        alert('Contact copied to clipboard: ' + contact);
+    }
+
+    function redirectToMap(location) {
+        alert('Redirecting to map for location: ' + location);
+    }
+
+    function showSubContainer(event) {
+        var subContainer = event.currentTarget.parentElement.querySelector('.sub-container');
+        subContainer.style.display = "block";
+    }
+
+    function hideSubContainer(event) {
+        var subContainer = event.currentTarget.parentElement.querySelector('.sub-container');
+        subContainer.style.display = "none";
+    }
+
+    fetchDataAndCreateContainers();
+</script>
+
+</body>
+</html>

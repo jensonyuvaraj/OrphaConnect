@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            min-height: 100vh;
+        }
+        .log-page {
+            display: block;
+            max-width: 350px;
+        }
+        .sign-btn {
+            display: inline-flex;
+            text-align: center;
+            color: #999;
+            cursor: pointer;
+        }
+        .signin-btn, .signup-btn {
+            min-width: 155px;
+            background-color: white;
+            padding: 20px;
+            width: 40%;
+            border-radius: 0px 0px;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.09);
+        }
+
+
+        .login-container {
+            min-width: 350px;
+            background-color: #fff;
+            border-radius: 0px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 40%;
+            z-index: 2;
+        }
+
+        .login-container h2 {
+            text-align: center;
+        }
+
+        .login-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .form-group input, .form-group textarea {
+            min-width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .forgot-password a {
+            color: #999;
+            text-decoration: none;
+        }
+        #optionsGroup {
+            display: none;
+        }
+        .optn {
+            color: white;
+            background-color: #0080ff;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 35px;
+            max-width: px;
+            cursor: pointer;
+            font-size: larger;
+        }
+        .opt-msg{
+            font-size: larger;
+            font-style: italic;
+            margin-bottom: 35px;
+        }
+        .user-details-form {
+            display: none; 
+            min-width: 350px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 0px;
+        }
+        .benefi-details-form {
+            display: none; 
+            min-width: 350px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 0px;
+        }
+        .return-back {
+            cursor: pointer;
+            fill: #999;
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <div class="log-page">
+            <div class="sign-btn">
+                <div class="signin-btn" onclick="showLogin()">Log In</div>
+                <div class="signup-btn" onclick="showSignup()">Sign-up</div>
+            </div>
+            <div class="login-container" id="loginContainer">
+                <form class="login-form" method="POST" action="/login.html" id="loginForm">
+                    <div class="form-group" id="phoneGroup">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                    </div>
+                    <div class="form-group" id="passwordGroup">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group" id="loginBtn">
+                        <button type="submit">Login</button>
+                    </div>
+                    <div class="forgot-password" id="forgotPwd">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                </form>
+                
+                <div class="form-group" id="optionsGroup">
+                    <p class="opt-msg">Choose Account Type:</p>
+                    <div id="options" class="options">
+                        <div class="optn" title="Users who volunteer donating" onclick="donorSignup()">Donor</div>
+                        <div class="optn" title="New Account for Orphanage owners" onclick="benefiSignup()">Beneficiary</div>
+                    </div>
+                </div>  
+            </div>
+            <div class="user-details-form" id="userDetailsForm">
+                <div class="return-back" onclick="showSignup()"> <!-- Change the onclick event to showLogin() -->
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                    </svg>
+                </div>
+                <h2 align="center">Sign Up</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" pattern="[a-zA-Z]+" required>
+                    </div>
+                    <div class="form-group" id="phoneGroup">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="aadhar">Aadhar Card (JPG):</label>
+                        <input type="file" id="aadhar" name="aadhar" accept="image/*,.pdf" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password1" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Confirm Password:</label>
+                        <input type="password" id="password2" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+            <div class="benefi-details-form" id="benefiDetailsForm">
+                <div class="return-back" onclick="showSignup()"> <!-- Change the onclick event to showLogin() -->
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </div>
+                <h2 align="center">Sign Up</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group" id="phoneGroup">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="certificate">Orphanage Certificate (JPG):</label>
+                        <input type="file" id="certificate" name="certificate" accept="image/jpeg" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <textarea id="address" name="address" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password1" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Confirm Password:</label>
+                        <input type="password" id="password2" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showLogin() {
+            document.getElementById("optionsGroup").style.display = "none";
+            document.getElementById("loginForm").style.display = "block";
+        }
+
+        function showSignup() {
+            document.querySelector(".sign-btn").style.display = "flex";
+            document.getElementById("optionsGroup").style.display = "block";
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("userDetailsForm").style.display = "none"; 
+            document.getElementById('benefiDetailsForm').style.display = "none";
+            document.getElementById("loginContainer").style.display = "block";
+        }
+
+        function donorSignup() {
+            document.querySelector(".sign-btn").style.display = "none";
+            document.getElementById("userDetailsForm").style.display = "block";
+            document.getElementById('benefiDetailsForm').style.display = "none";
+            document.getElementById("loginContainer").style.display = "none";
+        }
+
+        function benefiSignup() {
+            document.querySelector(".sign-btn").style.display = "none";
+            document.getElementById("userDetailsForm").style.display = "none";
+            document.getElementById('benefiDetailsForm').style.display = "block";
+            document.getElementById("loginContainer").style.display = "none";
+        }
+
+        function validatePasswords() {
+            var password1 = document.getElementById("password1").value;
+            var password2 = document.getElementById("password2").value;
+            if (password1 !== password2) {
+                alert("Passwords do not match");
+                return false;
+            }
+            return true;
+        }
+
+        function validatePasswordComplexity() {
+            var password = document.getElementById("password1").value;
+            var passwordPattern = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
+            if (!passwordPattern.test(password)) {
+                alert("Password must contain at least 8 characters with combinations of letters, numbers, and symbols");
+                return false;
+            }
+            return true;
+        }
+
+        document.getElementById("password1").addEventListener("blur", validatePasswordComplexity);
+        document.getElementById("password2").addEventListener("blur", validatePasswords);
+    </script>
+
+</body>
+</html>
