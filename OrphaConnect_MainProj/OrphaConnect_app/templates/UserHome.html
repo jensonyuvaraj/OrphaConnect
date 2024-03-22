@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="HeaderFooter.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="UserHome.css">
+</head>
+<body>
+  <div class="header">
+      <p class="title">OrphaConnect</p>
+      <nav class="menu">
+          <a href="#">Home</a>
+          <a href="#">About</a>
+          <a href="#">Profile</a>
+          <a href="login.html">Logout</a>
+      </nav>
+      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  </div>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <img src="avatar.jpg" alt="Avatar" onerror="this.style.display='none';document.getElementById('svgAvatar').style.display='block';">
+        <svg id="svgAvatar" xmlns="http://www.w3.org/2000/svg" height="90" width="90" viewBox="0 -960 960 960" style="display:none;">
+          <path d="M240.924-268.307q51-37.846 111.115-59.769Q412.154-349.999 480-349.999t127.961 21.923q60.115 21.923 111.115 59.769 37.308-41 59.116-94.923Q800-417.154 800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 62.846 21.808 116.77 21.808 53.923 59.116 94.923ZM480-450.001q-54.769 0-92.384-37.615T350.001-580q0-54.769 37.615-92.384T480-709.999q54.769 0 92.384 37.615T609.999-580q0 54.769-37.615 92.384T480-450.001Zm0 350q-79.154 0-148.499-29.77-69.346-29.769-120.654-81.076-51.307-51.308-81.076-120.654-29.77-69.345-29.77-148.499t29.77-148.499q29.769-69.346 81.076-120.654 51.308-51.307 120.654-81.076 69.345-29.77 148.499-29.77t148.499 29.77q69.346 29.769 120.654 81.076 51.307 51.308 81.076 120.654 29.77 69.345 29.77 148.499t-29.77 148.499q-29.769 69.346-81.076 120.654-51.308 51.307-120.654 81.076-69.345 29.77-148.499 29.77Z"/>
+        </svg>
+      </div>
+      <div class="profile-info">
+        <h1>John Doe</h1>
+        <p>Level 3 Donor</p>
+      </div>
+    </div>
+    <div class="profile-progress">
+      <div class="progress">
+        <div class="progress-bar" id="progressBar" style="width: 70%;">70%</div>
+      </div>
+      <p>Next Level: Donate 5 more to Level 4</p>
+    </div>
+    <div class="profile-stats">
+      <div class="stat">
+        <h2>Total Donations</h2>
+        <p>17</p>
+      </div>
+      <div class="stat">
+        <h2>Current Level</h2>
+        <p>Level 3</p>
+      </div>
+      <div class="stat">
+        <h2>Lifetime Impact</h2>
+        <p>Helped 50 people</p>
+      </div>
+    </div>
+  </div>
+      
+  <div class="container">
+    <div class="charity-container" onclick="openModal('Food Charity')">
+      <h2>Food Charity</h2>
+      <p>Donate to help provide food to those in need.</p>
+    </div>
+    <div class="charity-container" onclick="openModal('Fund Charity')">
+      <h2>Fund Charity</h2>
+      <p>Donate to support various charitable causes.</p>
+    </div>
+    <div class="charity-container" onclick="openModal('Other Charity')">
+      <h2>Other Charity</h2>
+      <p>Donate to support other causes.</p>
+    </div>
+  </div>
+      
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span onclick="closeModal()" style="cursor: pointer; float: right;">&times;</span>
+      <h2 id="modal-title">Register for Donation</h2>
+      <!-- Form for donation registration -->
+      <form>
+        <label for="food-type">Food type:</label><br>
+        <select id="food-type" name="food-type">
+          <option value="vegetarian">Vegetarian</option>
+          <option value="non-vegetarian">Non-Vegetarian</option>
+        </select><br>
+        <label for="food-image">Upload Food Image:</label><br>
+        <input type="file" id="food-image" name="food-image" accept="image/*;capture=camera"><br>
+        <label for="location">Location:</label><br>
+        <input type="text" id="location" name="location" placeholder="Enter your location"><br><br>
+        <label for="food-type">Food type:</label><br>
+        <select id="delivery-type" name="delivery-type">
+          <option value="Drop down">Drop down</option>
+          <option value="Pick-up">Pick-up</option>
+        </select><br>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
+    
+  <footer>
+      <div class="footer-content">
+          <p>&copy; 2024 OrphaConnect Website. All rights reserved.</p>
+          <p>Contact: padhavangroups@gmail.com</p>
+      </div>
+  </footer>
+    
+  <script>
+      function toggleMenu() {
+          var menu = document.querySelector(".menu");
+          menu.classList.toggle("show");
+      }
+      function openModal(charityType) {
+        document.getElementById('modal').style.display = 'flex';
+        document.getElementById('modal-title').innerText = 'Register for ' + charityType + ' Donation';
+      }
+
+      function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+      }
+      function progressVal() {
+        var progress = document.getElementById('progressBar');
+        if(progress.style.width !== 0) {
+          
+        }
+      }
+      
+  </script>
+</body>
+</html>

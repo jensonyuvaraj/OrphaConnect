@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beneficiary UI</title>
+    <link rel="stylesheet" href="HeaderFooter.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="BeneficiaryHome.css">
+</head>
+<body>
+    <div class="header">
+        <p class="title">OrphaConnect</p>
+        <nav class="menu">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Profile</a>
+            <a href="#">Logout</a>
+            
+        </nav>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    </div>
+    
+<script>
+    function fetchDataAndCreateContainers() {
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    var container = document.createElement('div');
+                    container.className = 'container';
+
+                    var foodTypeSpan = document.createElement('span');
+                    foodTypeSpan.className = 'food-type';
+                    foodTypeSpan.textContent = item.foodType;
+                    container.appendChild(foodTypeSpan);
+
+                    var imageContainer = document.createElement('div');
+                    imageContainer.className = 'image-container';
+                    var image = document.createElement('img');
+                    var imagePath = item.image || 'images/Food.jpg'; // Adjust default image path here
+                    image.src = imagePath;
+                    image.alt = 'Food Image';
+                    imageContainer.appendChild(image);
+                    container.appendChild(imageContainer);
+
+                    var locationPara = document.createElement('p');
+                    var locationWrapper = document.createElement('div'); // Wrap location and sub-container
+                    locationPara.className = 'location';
+                    locationPara.innerHTML = '<b>Location: </b>' + item.location;
+                    locationPara.addEventListener('mouseover', showSubContainer);
+                    locationPara.addEventListener('mouseout', hideSubContainer);
+                    locationWrapper.appendChild(locationPara);
+
+                    var subContainer = document.createElement('div');
+                    subContainer.className = 'sub-container';
+                    subContainer.addEventListener('mouseover', showSubContainer);
+                    subContainer.addEventListener('mouseout', hideSubContainer);
+                    subContainer.innerHTML = `
+                        <ul>
+                            <li onclick="copyLocation('${item.location}')">Copy Location</li>
+                            <li onclick="redirectToMap('${item.location}')">Redirect to Map</li>
+                        </ul>
+                    `;
+                    locationWrapper.appendChild(subContainer);
+
+                    container.appendChild(locationWrapper);
+
+                    
+                    var deliveryPara = document.createElement('p');
+                    deliveryPara.className = 'delivery-mode';
+                    deliveryPara.innerHTML = '<b>Delivery:</b> '+item.delivery;
+                    container.appendChild(deliveryPara);
+                    
+
+                    var contactDetails = document.createElement('div');
+                    contactDetails.className = 'contact-details';
+                    var contactPara = document.createElement('p');
+                    contactPara.title = 'Click to copy';
+                    contactPara.innerHTML = '<b>Contact:</b> <em onclick="copyToClipboard(this)">' + item.contact + '</em>';
+                    contactDetails.appendChild(contactPara);
+                    var acknowledgeBtn = document.createElement('button');
+                    acknowledgeBtn.className = 'acknowledge-btn';
+                    acknowledgeBtn.textContent = "I'm Available";
+                    acknowledgeBtn.addEventListener('click', function() {
+                        alert("Your acknowledgement has been sent to the donor!");
+                    });
+                    contactDetails.appendChild(acknowledgeBtn);
+                    container.appendChild(contactDetails);
+
+                    document.body.appendChild(container);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching JSON:', error);
+            });
+    }
+    
+
+    function copyLocation(location) {
+        navigator.clipboard.writeText(location);
+        alert('Location copied to clipboard: ' + location);
+    }
+
+    function copyToClipboard(element) {
+        var contact = element.textContent;
+        const el = document.createElement('textarea');
+        el.value = contact;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        alert('Contact copied to clipboard: ' + contact);
+    }
+
+    function redirectToMap(location) {
+        alert('Redirecting to map for location: ' + location);
+    }
+
+    function showSubContainer(event) {
+        var subContainer = event.currentTarget.parentElement.querySelector('.sub-container');
+        subContainer.style.display = "block";
+    }
+
+    function hideSubContainer(event) {
+        var subContainer = event.currentTarget.parentElement.querySelector('.sub-container');
+        subContainer.style.display = "none";
+    }
+
+    fetchDataAndCreateContainers();
+</script>
+
+</body>
+</html>

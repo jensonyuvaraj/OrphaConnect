@@ -1,0 +1,21 @@
+[
+    {
+      "foodType": "Vegetarian",
+      "location": "Community Center A",
+      "delivery": "Self-Retrieval",
+      "contact": "+123456789"
+    },
+    {
+      "foodType": "Non-Vegetarian",
+      "location": "Community Center B",
+      "delivery": "Doorstep",
+      "contact": "+987654321"
+    },
+    {
+      "foodType": "Vegan",
+      "location": "Community Center C",
+      "delivery": "Doorstep",
+      "contact": "+555666777"
+    }
+]
+  
