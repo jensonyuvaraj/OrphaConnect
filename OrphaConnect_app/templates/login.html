@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f1f1;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .log-page {
+      display: block;
+      max-width: 350px;
+    }
+
+    .sign-btn {
+      display: inline-flex;
+      text-align: center;
+      color: #999;
+      cursor: pointer;
+    }
+
+    .signin-btn,
+    .signup-btn {
+      min-width: 200px;
+      background-color: #fff;
+      padding: 20px;
+      width: 40%;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.09);
+    }
+
+    .login-container {
+      min-width: 400px;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 40%;
+      z-index: 2;
+    }
+
+    .login-container h2 {
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+
+    .form-group button {
+      
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .button {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: #fff;
+  text-align: center;
+  text-decoration: none; /* Remove underline */
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Optional hover effect */
+.button:hover {
+  background-color: #45a049;
+}
+
+
+    .forgot-password {
+      text-align: center;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .forgot-password a {
+      color: #999;
+      text-decoration: none;
+    }
+
+    .loginUser, .chnPwdUser {
+      min-width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+
+      background-color: #f9f9f9;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .select2-selection__arrow {
+      height: 40px;
+    }
+
+    .optn {
+      color: #fff;
+      background-color: #0080ff;
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 35px;
+      cursor: pointer;
+      font-size: larger;
+    }
+
+    .opt-msg {
+      font-size: larger;
+      font-style: italic;
+      margin-bottom: 35px;
+    }
+
+    .user-details-form,
+    .benefi-details-form {
+      display: none;
+      min-width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-top: 0;
+    }
+
+    .return-back {
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 3;
+    }
+
+    .loc-svg {
+      cursor: pointer;
+      display: inline-flex;
+      height: 50px;
+      width: 50px;
+      padding: 5px;
+      margin-right: 5px;
+      border: 1px solid #999;
+      border-radius: 5px;
+    }
+
+    .dim-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      display: none;
+    }
+
+    .map-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      min-width: 500px;
+      height: 70%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+    }
+    #map {
+      height: 100%;
+      width: 100%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .change-password,
+    #optionsGroup,
+    .otpGroup,
+    .otpButtonGroup {
+      display: none;
+    }
+  </style>
+
+</head>
+
+<body onload="initMap()">
+  <iframe id="loading-frame" src="loading.html" frameborder="0" style="width: 100%; height: 100vh;"></iframe>
+  <main>
+    <div class="log-page">
+      <div class="sign-btn">
+        <div class="signin-btn" onclick="showLogin()">Log In</div>
+        <div class="signup-btn" onclick="showSignup()">Sign-up</div>
+      </div>
+      <div class="login-container" id="loginContainer">
+        <form class="login-form" id="loginForm" action="/login">
+          <div class="form-group phoneGroup">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" name="phone" maxlength="10" required>
+          </div>
+          <div class="form-group">
+            <label for="mySelect">Select the user type:</label>
+            <select class="loginUser" name="usertype_option" required>
+              <option value="" disabled selected hidden>Please select an option</option>
+              <option value="donor">donor</option>
+              <option value="beneficiary">beneficiary</option>
+            </select>
+          </div>
+          <div class="form-group passwordGroup">
+            <label for="password">Password:</label>
+            <input type="password" name="password" minlength="8" maxlength="16" required>
+          </div>
+          <div class="form-group loginBtn">
+            <!-- <button type="submit" onclick="login()">Login</button> -->
+            <a class="button" onclick="login()">Login</a>
+          </div>
+          <div class="forgot-password forgotPwd">
+            <a href="javascript:void(0)" onclick="showChgPwd()">Forgot Password?</a>
+          </div>
+        </form>
+
+
+        <div class="form-group" id="optionsGroup">
+          <p class="opt-msg">Choose Account Type:</p>
+          <div id="options" class="options">
+            <div class="optn" title="Users who volunteer donating" onclick="donorSignup()">Donor</div>
+            <div class="optn" title="New Account for Orphanage owners" onclick="benefiSignup()">Beneficiary</div>
+          </div>
+        </div>
+
+
+        <div class="change-password" id="changePassword">
+          <div class="return-back" onclick="showLogin()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+              <path
+                d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+          </div>
+          <h2 align="center">Change Password</h2>
+
+          <form class="change-pwd" id="chngPwd">
+            <div class="form-group phoneGroup">
+              <label for="phone">Phone Number:</label>
+              <input type="tel" name="phone" maxlength="10" oninput="showOtpInput(event)" required>
+            </div>
+            <div class="form-group otpGroup">
+              <label for="otp">OTP:</label>
+              <input type="text" name="otp" pattern="[0-9]{6}" maxlength="6" required>
+            </div>
+            <div class="form-group otpButtonGroup">
+              <button class="verifyBtn" style="width: 45%; display: inline; background-color: #0080ff;">Verify
+                OTP</button>
+              <button class="resendBtn" style="width: 45%; display: inline; background-color: #0080ff;">Send
+                OTP</button>
+            </div>
+            <div class="form-group">
+              <label for="mySelect">Select an option:</label>
+              <select class="chnPwdUser" name="usertype_option" required>
+                <option value="" disabled selected hidden>Please select an option</option>
+                <option value="donor">donor</option>
+                <option value="beneficiary">beneficiary</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="password">New Password:</label>
+              <input type="password" name="password" minlength="8" maxlength="16" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Confirm Password:</label>
+              <input type="password" name="password" class="confirm-pwd" required>
+            </div>
+            <div class="form-group">
+              <button type="submit" onclick="chngpwd()">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+      <div class="user-details-form" id="userDetailsForm">
+        <div class="return-back" onclick="showSignup()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path
+              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+          </svg>
+        </div>
+        <h2 align="center">Sign Up</h2>
+
+        <form class="user-form" id="userForm">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" name="name" pattern="[A-Za-zÀ-ÿ\- ']{1,50}" required>
+          </div>
+          <div class="form-group phoneGroup">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" name="phone" maxlength="10" oninput="showOtpInput(event)" required>
+          </div>
+          <div class="form-group otpGroup">
+            <label for="otp">OTP:</label>
+            <input type="text" name="otp" pattern="[0-9]{6}" maxlength="6" required>
+          </div>
+          <div class="form-group otpButtonGroup">
+            <button class="verifyBtn" style="width: 45%; display: inline; background-color: #0080ff;">Verify
+              OTP</button>
+            <button class="resendBtn" style="width: 45%; display: inline; background-color: #0080ff;">Send OTP</button>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="aadhar">Aadhar Card (JPG):</label>
+            <input type="file" class="aadhar" name="aadhar" accept="image/*,.pdf" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" minlength="8" maxlength="16" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Confirm Password:</label>
+            <input type="password" name="password" class="confirm-pwd" required>
+          </div>
+          <div class="form-group">
+            <button type="submit" onclick="donorForm()">Sign Up</button>
+          </div>
+        </form>
+      </div>
+
+
+      <div class="benefi-details-form" id="benefiDetailsForm">
+        <div class="return-back" onclick="showSignup()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path
+              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+          </svg>
+        </div>
+        <h2 align="center">Sign Up</h2>
+
+        <form class="beneficiary-form" id="beneficiaryForm">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" name="name" required>
+          </div>
+          <div class="form-group phoneGroup">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" name="phone" maxlength="10" oninput="showOtpInput(event)" required>
+          </div>
+          <div class="form-group otpGroup">
+            <label for="otp" style="display: block;">OTP:</label>
+            <input type="text" name="otp" pattern="[0-9]{6}" maxlength="6" required>
+          </div>
+          <div class="form-group otpButtonGroup">
+            <button class="verifyBtn" style="width: 45%; display: inline; background-color: #0080ff;">Verify
+              OTP</button>
+            <button class="resendBtn" style="width: 45%; display: inline; background-color: #0080ff;">Send OTP</button>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="certificate">Orphanage Certificate (JPG):</label>
+            <input type="file" id="certificate" name="certificate" accept="image/jpeg" required>
+          </div>
+          <div class="form-group">
+            <label for="address">Address:</label>
+            <svg onclick="showMap()" class="loc-svg" xmlns="http://www.w3.org/2000/svg" height="24"
+              viewBox="0 -960 960 960" width="24">
+              <path
+                d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z" />
+            </svg>
+            <textarea class="address" id="address" name="address" style="height: 70px; width: 300px;" required></textarea>
+         </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" minlength="8" maxlength="16" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Confirm Password:</label>
+            <input type="password" name="password" class="confirm-pwd" required>
+          </div>
+          <div class="form-group">
+            <button type="submit" onclick="beneficiaryForm()">Sign Up</button>
+          </div>
+
+        </form>
+        <div class="dim-overlay" id="dimOverlay"></div>
+        <div class="map-container" id="mapContainer">
+          <div class="return-back" onclick="goBack()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+              <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+          </div>
+          <div id="map"></div>
+        </div>
+      
+      </div>
+    </div>
+  </main>
+
+
+  <!-- Toast container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="images/Logo.png" height="40" width="40" class="rounded me-2" alt="...">
+      <strong class="me-auto">Alert</strong>
+      <small>just now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body"></div>
+  </div>
+</div>
+
+
+  <script>
+    function showToast(message) {
+      const toastElement = document.getElementById('liveToast');
+      const toastBody = toastElement.querySelector('.toast-body');
+      if (toastElement && toastBody) {
+        toastBody.textContent = message;
+        const toastInstance = new bootstrap.Toast(toastElement);
+        toastInstance.show();
+      }
+    }
+
+    function showSignup() {
+      document.querySelector(".sign-btn").style.display = "flex";
+      document.getElementById("optionsGroup").style.display = "block";
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("userDetailsForm").style.display = "none";
+      document.getElementById("benefiDetailsForm").style.display = "none";
+      document.getElementById("loginContainer").style.display = "block";
+    }
+    function showLogin() {
+      document.getElementById("optionsGroup").style.display = "none";
+      document.getElementById("loginForm").style.display = "block";
+      document.querySelector(".sign-btn").style.display = "flex";
+      document.getElementById("changePassword").style.display = "none";
+      document.getElementById("loginContainer").style.display = "block";
+    }
+    function showChgPwd() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("changePassword").style.display = "block";
+      document.querySelector(".sign-btn").style.display = "none";
+      document.getElementById("loginContainer").style.display = "block";
+    }
+    function donorSignup() {
+      document.querySelector(".sign-btn").style.display = "none";
+      document.getElementById("userDetailsForm").style.display = "block";
+      document.getElementById("benefiDetailsForm").style.display = "none";
+      document.getElementById("loginContainer").style.display = "none";
+    }
+    function benefiSignup() {
+      document.querySelector(".sign-btn").style.display = "none";
+      document.getElementById("userDetailsForm").style.display = "none";
+      document.getElementById("benefiDetailsForm").style.display = "block";
+      document.getElementById("loginContainer").style.display = "none";
+    }
+    function validatePhoneNumber(phoneNumber) {
+      if (!(/^\d{10}$/.test(phoneNumber))) {
+        showToast("Please enter the valid 10-digit phone number");
+        return false;
+      }
+      return true;
+    }
+
+    document.querySelectorAll('input[name="phone"]').forEach(input => {
+      input.addEventListener("blur", function () {
+        const phoneNumber = this.value.trim();
+        validatePhoneNumber(phoneNumber);
+      })
+    });
+
+    // Function to check if passwords match
+    function passwordsMatch(inputField) {
+      const form = inputField.closest('form');
+      const passwordFields = form.querySelectorAll('input[type="password"]');
+      const password1 = passwordFields[0].value;
+      const password2 = passwordFields[1].value;
+      return password1 === password2;
+    }
+
+    // Add input event listener to each password field
+    document.querySelectorAll('.confirm-pwd').forEach(field => {
+      field.addEventListener('blur', function () {
+        if(!passwordsMatch(this)){
+          showToast("Passwords do not match. Please recheck.");
+        }
+      });
+    });
+
+    // Function to handle OTP input display
+    function showOtpInput(event) {
+      const t = event.target.closest('form').querySelector('input[name="phone"]');
+      const e = event.target.closest('form').querySelector('.otpButtonGroup');
+      const n = event.target.closest('form').querySelector('.otpGroup');
+      t.value.trim() !== "" ? (n.style.display = "block", e.style.display = "block") : (n.style.display = "none", e.style.display = "none");
+    }
+
+    function resend_otp(phone) {
+      fetch('/resend_otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ phone: phone })
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function startResendCountdown(seconds, buttonElement) {
+      let sec = seconds;
+      buttonElement.disabled = true;
+      buttonElement.style.opacity = 0.5;
+
+      function updateCountdown() {
+        if (sec > 0) {
+          buttonElement.textContent = "Resend in " + sec + "s";
+          sec--;
+          setTimeout(updateCountdown, 1000);
+        } else {
+          buttonElement.textContent = "Resend";
+          buttonElement.disabled = false;
+          buttonElement.style.opacity = 1.0;
+        }
+      }
+      updateCountdown();
+    }
+
+    const seconds = 30;
+
+    document.querySelectorAll('.resendBtn').forEach(item => {
+      item.addEventListener('click', event => {
+        const phoneElement = event.target.closest('form').querySelector('input[name="phone"]');
+        const phoneNumber = phoneElement.value;
+        resend_otp(phoneNumber);
+        startResendCountdown(seconds, event.target);
+      });
+    });
+
+    // Function to verify OTP
+    function verify_otp(phone, otp, form) {
+      fetch('/verify_otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ phone: phone, otp: otp })
+      })
+        .then(response => response.json())
+        .then(data => {
+          showToast(data.message);
+          if (data.success === 'approved') {
+            form.setAttribute('data-verified', 'true');
+            form.querySelector('.otpButtonGroup').style.display = 'none';
+            form.querySelector('.otpGroup').style.display = 'none';
+
+          } else {
+            form.setAttribute('data-verified', 'false');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    document.querySelectorAll('.verifyBtn').forEach(item => {
+      item.addEventListener('click', event => {
+        const form = event.target.closest('form');
+        const phoneElement = form.querySelector('input[name="phone"]');
+        const otpElement = form.querySelector('input[name="otp"]');
+        const phoneNumber = phoneElement.value;
+        const otpCode = otpElement.value;
+        if (otpCode !== "") {
+          verify_otp(phoneNumber, otpCode, form);
+        }
+      });
+    });
+
+
+    //function login() {
+    //var form = document.querySelector('.login-form');
+    //var mySelect = form.querySelector('.loginUser');
+    //fetch('/login', {
+    //    method: 'POST',
+    //    headers: {
+    //        'Content-Type': 'application/json'
+    //    },
+    //    body: JSON.stringify({ phone: form.phone.value, user_type: mySelect.value, password: form.password.value })
+    //}).then(response => response.json())
+    //.then(data => {
+    //    console.log("Login done.... redirecting!")
+    //}).catch(error => {
+    //    console.error('Error:', error);
+    //});
+//}
+
+function login() {
+  var form = document.querySelector('.login-form');
+    var phone = form.phone.value;
+    var password = form.password.value;
+
+    // Perform validation or other necessary checks here if needed
+
+    // Check if phone and password are correct
+    if (phone === "7904745119" && password === "jen03@Example") {
+        window.location.href = "UserHome.html";
+        console.log("Login successful. Redirecting...");
+        // Perform redirection to another page here
+    } else {
+      showToast("Incorrect phone number or password. Please sign up.");
+    }
+}
+
+
+
+function chngpwd() {
+    var form = document.querySelector('.change-pwd');
+    var mySelect = form.querySelector('.chnPwdUser');
+    fetch('/change_password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ phone: form.phone.value, user_type: mySelect.value, password: form.password.value })
+    }).then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+          showToast("Please sign up, Phone number doesn't exist.");
+            showSignup();
+        } else {
+          showToast("Password Updated");
+            showLogin();
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+
+    
+    function donorForm() {
+      var form = document.querySelector('.user-form');
+      var formData = new FormData();
+
+      formData.append('name', form.name.value);
+      formData.append('phone', form.phone.value);
+      formData.append('email', form.email.value);
+      formData.append('aadhar', form.aadhar.files[0]); 
+      formData.append('password', form.password.value);
+
+      fetch('/signup/donor', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.message || data.success){
+          showLogin();
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    function beneficiaryForm() {
+      var form = document.getElementById('beneficiaryForm');
+      var formData = new FormData();
+
+      formData.append('name', form.name.value);
+      formData.append('phone', form.phone.value);
+      formData.append('email', form.email.value);
+      formData.append('certificate', form.certificate.files[0]); 
+      formData.append('address',form.address.value);
+      formData.append('password', form.password.value);
+
+      fetch('/signup/beneficiary', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.message || data.success){
+          showLogin();
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    // Function to go back
+    function showMap() {
+      document.querySelector(".map-container").style.display = 'flex';
+      document.querySelector(".dim-overlay").style.display = 'block';
+    }
+    function goBack() {
+      document.querySelector(".map-container").style.display = 'none';
+      document.querySelector(".dim-overlay").style.display = 'none';
+    }
+  </script>
+
+<script src="geoLoc.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkaHR7AEGMvaLN26kcF7azLgfPVxnGxd8&callback=initMap" async defer></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

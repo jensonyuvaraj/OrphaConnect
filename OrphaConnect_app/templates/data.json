@@ -1,0 +1,44 @@
+[
+  {
+    "charityType": "Food",
+    "foodType": "Vegetarian",
+    "location": "Community Center D",
+    "delivery": "Self-retrieval",
+    "contact": "7904745119",
+    "id": "1"
+  },
+  {
+    "charityType": "Other",
+    "productItem": "Dress",
+    "productDesc": "",
+    "location": "Community Center A",
+    "delivery": "Doorstep",
+    "contact": "07904745119",
+    "id": 2
+  },
+  {
+    "charityType": "Food",
+    "foodType": "Vegetarian",
+    "location": "The Children's Home of Hope",
+    "delivery": "Doorstep",
+    "contact": "08438938922",
+    "id": 5
+  },
+  {
+    "charityType": "Other",
+    "productItem": "Wheel chair",
+    "productDesc": "",
+    "location": "Home care",
+    "delivery": "Self-retrieval",
+    "contact": "09080593531",
+    "id": 6
+  },
+  {
+    "charityType": "Food",
+    "foodType": "Vegetarian",
+    "location": "Home care",
+    "delivery": "Doorstep",
+    "contact": "09080593531",
+    "id": 7
+  }
+]
