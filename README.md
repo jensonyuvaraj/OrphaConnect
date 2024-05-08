@@ -1,4 +1,4 @@
-<img src="https://github.com/jensonyuvaraj/OrphaConnect/assets/70461465/52e3f6db-91fc-4808-a16e-efeab38d1197" alt="Logo_hr" width="300" height="75">
+<img src="https://github.com/jensonyuvaraj/OrphaConnect/assets/70461465/52e3f6db-91fc-4808-a16e-efeab38d1197" alt="Logo_hr" width="280" height="75">
 
 # OrphaConnect
 OrphaConnect is a web-based platform designed to address the challenges of food wastage and support orphanages by facilitating food and fund charity donations. Leveraging technology and community engagement, OrphaConnect aims to bridge the gap between surplus food from social events and the needs of orphanages, contributing to both social welfare and environmental sustainability.
