@@ -1,3 +1,4 @@
+![Logo_hr](https://github.com/jensonyuvaraj/OrphaConnect/assets/70461465/52e3f6db-91fc-4808-a16e-efeab38d1197)
 
 # OrphaConnect
 OrphaConnect is a web-based platform designed to address the challenges of food wastage and support orphanages by facilitating food and fund charity donations. Leveraging technology and community engagement, OrphaConnect aims to bridge the gap between surplus food from social events and the needs of orphanages, contributing to both social welfare and environmental sustainability.
@@ -14,4 +15,4 @@ To get started with OrphaConnect, follow these steps:
 - Clone the repository: `git clone https://github.com/jensonyuvaraj/orphaconnect.git`
 - Install dependencies: `npm install`
 - Run the application: `npm start`
-- Visit [http://localhost:3000](http://localhost:3000) in your web browser to access OrphaConnect.
+- Visit `http://localhost:3000` in your web browser to access OrphaConnect.
